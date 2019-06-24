@@ -6,13 +6,15 @@ import store from './store'
 
 // 引入公共样式
 import './mycommon/style/reset.css'
-
 // 全局引入mint-ui
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
 // 引入二次封装的axiox
 import MyAxios from '../src/mycommon/utils/myAxios'
+
+// 设置公共的方法observer
+Vue.prototype.observer = new Vue()
 
 // 全局使用mint-ui
 Vue.use(MintUI)

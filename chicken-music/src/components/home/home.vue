@@ -1,11 +1,11 @@
 <template>
   <div id="home">
-    <head-com></head-com>
-    <tab-com></tab-com>
+    <head-com v-show="show"></head-com>
+    <tab-com v-show="show"></tab-com>
     <!-- 动态显示组件 -->
-    <div class="con">
-      <router-view></router-view>
-    </div>
+    <!-- <div class="con"> -->
+    <router-view></router-view>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -15,10 +15,26 @@ import Head from './head'
 import Tab from './tab'
 
 export default {
+  data () {
+    return {
+      show: true
+
+    }
+  },
   // 注册组件
   components: {
     'head-com': Head,
     'tab-com': Tab
+  },
+  created () {
+    // console.log(this.observer.$on)
+    this.observer.$on('handleShow', (val) => {
+      // console.log(val)
+      this.show = val
+    })
+  },
+  methods: {
+
   }
 }
 </script>
@@ -31,10 +47,6 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  .con {
-    /* flex: 1; */
-    height: 5.8rem;
-    background: #222;
-  }
+  background: #222;
 }
 </style>

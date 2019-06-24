@@ -1,8 +1,5 @@
 <template>
   <div id="search">
-    <!-- <div class="box">
-      <input type="text">
-    </div> -->
     <input type="text">
 
   </div>
@@ -20,5 +17,8 @@ export default {
   height: 0.5rem;
   /* padding: 20px 15px; */
   background: orange;
+}
+input {
+  font-size: 16px;
 }
 </style>

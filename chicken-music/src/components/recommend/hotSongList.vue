@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import Local from 'utils/localstorage'
 export default {
   data () {
     return {
@@ -25,12 +26,20 @@ export default {
   },
   methods: {
     initSongList () {
-      this.$axios.get('/api/fcj/recommend/hot')
-        .then((data) => {
-          // console.log(data)
-          this.list = data.data.list
-        })
+      // http://ustbhuangyi.com/music/api/getDiscList?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=json&platform=yqq&hostUin=0&sin=0&ein=29&sortId=5&needNewCode=0&categoryId=10000000&rnd=0.028217578239842833
+
+      let hotSongRecommend = Local.get('hotSongRecommend')
+      if (hotSongRecommend) {
+        this.list = hotSongRecommend.list
+      } else {
+        this.$axios.get('/api/music/api/getDiscList?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=json&platform=yqq&hostUin=0&sin=0&ein=29&sortId=5&needNewCode=0&categoryId=10000000&rnd=0.028217578239842833')
+          .then((res) => {
+            Local.set('hotSongRecommend', res.data, 30000)
+            this.list = res.data.list
+          })
+      }
     }
+
   },
   mounted () {
     this.initSongList()

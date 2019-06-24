@@ -3,10 +3,10 @@
   <div id="tabBar">
     <ul>
       <li v-for="(item,index) in tab"
-          :key="index"
-          @click="handleTab(index)">
+          :key="index">
         <router-link :to="item.path">
-          <span :class="index==indexA?'active':''">{{item.name}}</span>
+          <span>{{item.name}}</span>
+
         </router-link>
       </li>
     </ul>
@@ -17,7 +17,6 @@
 export default {
   data () {
     return {
-      indexA: '',
       tab: [
         { path: '/recommend', name: '推荐' },
         { path: '/singer', name: '歌手' },
@@ -27,9 +26,7 @@ export default {
     }
   },
   methods: {
-    handleTab (val) {
-      this.indexA = val
-    }
+
   }
 }
 </script>
@@ -61,9 +58,13 @@ export default {
         span {
           padding-bottom: 7px;
         }
-        .active {
-          color: #ffcd32;
+      }
+      /* 当router-link为活跃状态时，span样式才会生效 */
+      .router-link-active {
+        color: #ffcd32;
+        span {
           border-bottom: 2px solid #ffcd32;
+          padding-bottom: 7px;
         }
       }
     }

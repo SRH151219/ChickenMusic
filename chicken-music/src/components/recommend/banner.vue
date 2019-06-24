@@ -4,7 +4,7 @@
       <mt-swipe-item v-for='(item,index) in bannerList'
                      :key='index'>
         <a href="##">
-          <img :src="item.picUrl"
+          <img v-lazy="item.picUrl"
                alt="">
         </a>
       </mt-swipe-item>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -20,11 +21,11 @@ export default {
 
     }
   },
-  // 接收父组件传来的值
   props: ['banner'],
   // 监听数据是否发生变化
   watch: {
     banner (newVal, oldVal) {
+      // console.log(newVal)
       this.bannerList = newVal
     }
 
@@ -40,8 +41,6 @@ export default {
 #banner {
   width: 100%;
   height: 1.5rem;
-  background: orange;
-
   a {
     display: block;
     height: 1.5rem;
