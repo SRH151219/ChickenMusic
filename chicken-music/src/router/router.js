@@ -3,14 +3,15 @@ import Vue from 'vue'
 // 引入路由插件
 import Router from 'vue-router'
 // 引入推荐组件
-import Recommend from 'components/recommend/recommend'
-// 引入歌手组件
-import Singer from 'components/singer/singer'
-import Rank from 'components/rank/rank'
-import Search from 'components/search/search'
-import SingerDetails from 'components/singer/singerDetails'
+const Recommend = () => import('components/recommend/recommend')
+const Singer = () => import('components/singer/singer')
+const Rank = () => import('components/rank/rank')
+const Search = () => import('components/search/search')
+const SingerDetails = () => import('components/singer/singerDetails')
+const RecommendDetails = () => import('components/recommend/recommendDetails')
+const RankDetails = () => import('components/rank/rankDetails')
+const Test = () => import('components/home/test')
 
-import Test from 'components/home/test'
 // 使用路由插件
 Vue.use(Router)
 
@@ -30,7 +31,13 @@ const router = new Router({
   },
   {
     path: '/recommend',
-    component: Recommend
+    component: Recommend,
+    children: [{
+      path: 'details',
+      name: 'recommendDetails',
+      component: RecommendDetails
+
+    }]
   },
   {
     path: '/singer',
@@ -44,7 +51,13 @@ const router = new Router({
   },
   {
     path: '/rank',
-    component: Rank
+    component: Rank,
+    children: [{
+      path: 'details',
+      name: 'rankDetails',
+      component: RankDetails
+
+    }]
 
   },
   {

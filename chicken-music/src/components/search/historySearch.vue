@@ -8,7 +8,7 @@
 export default {
 
 }
-</script>
+</script >
 
-<style>
+<style lang='less' scoped>
 </style>

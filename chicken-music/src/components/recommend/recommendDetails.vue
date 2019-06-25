@@ -1,37 +1,37 @@
 <template>
-  <transition name="move">
-    <div id="details">
-      <div class="con"
-           v-show="show">
-        <div class="back iconfont icon-fanhui"
-             @click="handleBack()"></div>
-        <h1>{{singerName}}</h1>
+  <!-- <transition name="move"> -->
+  <div id="details">
+    <div class="con"
+         v-show="show">
+      <div class="back iconfont icon-fanhui"
+           @click="handleBack()"></div>
+      <h1>{{singerName}}</h1>
 
-        <div class="mark"></div>
+      <div class="mark"></div>
 
-        <div class="imgCon"
-             :style="bg">
-        </div>
-        <div class="play">
-          <p class="iconfont icon-bofang"></p>
-          <p>随机播放全部</p>
-        </div>
+      <div class="imgCon"
+           :style="bg">
+      </div>
+      <div class="play">
+        <p class="iconfont icon-bofang"></p>
+        <p>随机播放全部</p>
+      </div>
 
-        <div class="singerBox">
-          <div class="wrapper singerWrapper">
-            <div class="list content">
-              <div class="box"
-                   v-for="(item,index) in list"
-                   :key="index">
-                <p class="title">{{item.musicData.songname}}</p>
-                <p class="desc">{{item.musicData.singer[0].name}}-{{item.musicData.albumname}}</p>
-              </div>
+      <div class="singerBox">
+        <div class="wrapper singerWrapper">
+          <div class="list content">
+            <div class="box"
+                 v-for="(item,index) in list"
+                 :key="index">
+              <p class="title">{{item.songname}}</p>
+              <p class="desc">{{item.singer[0].name}} {{item.singer.length>1?item.singer[1].name:''}}.{{item.songname}}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </transition>
+  </div>
+  <!-- </transition> -->
 
 </template>
 
@@ -53,13 +53,13 @@ export default {
     }
   },
   created () {
+    // console.log(this.$route.query)
     // 接收数据
-    let { Fsinger_mid, Fsinger_name, imgUrl } = this.$route.query.item
-    // console.log(Fsinger_mid)
-    this.id = Fsinger_mid
-    this.singerName = Fsinger_name
+    let { dissid, imgurl, dissname } = this.$route.query.item
+    this.id = dissid
+    this.singerName = dissname
     this.bg = {
-      background: `url('${imgUrl}') no-repeat`,
+      background: `url('${imgurl}') no-repeat`,
       'background-size': 'cover'
     }
     this.getDetailsData()
@@ -72,14 +72,9 @@ export default {
     },
     // 获取数据
     getDetailsData () {
-      let url = `https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&hostUin=0&needNewCode=0&platform=yqq&order=listen&begin=0&num=80&songstatus=1&singermid=${this.id}`
-      Jsonp(url, { param: 'jsonpCallback' }, (err, res) => {
-        // 将数据存到缓存中
-        // Local.set('singerDetails', res.data, 30000)
-        // 调用处理数据的方法
-        console.log(res)
-        this.list = res.data.list
-        // console.log(this.list)
+      this.$axios.get(`/api/music/api/getCdInfo?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&disstid=${this.id}&type=1&json=1&utf8=1&onlysong=0&platform=yqq&hostUin=0&needNewCode=0`).then((data) => {
+        console.log(data)
+        this.list = data.cdlist[0].songlist
       })
     },
     //
@@ -120,7 +115,6 @@ export default {
       position: absolute;
       top: 0.4rem;
       padding-bottom: 0.4rem;
-      z-index: 6;
       .wrapper {
         // height: 5.rem;
         height: 100%;
@@ -174,8 +168,6 @@ export default {
     top: 2.2rem;
     left: 1.36rem;
     display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 12px;
     color: #ffcd32;
     border: 1px solid #ffcd32;

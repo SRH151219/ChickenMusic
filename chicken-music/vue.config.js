@@ -38,6 +38,7 @@ module.exports = {
     config.resolve.alias
       .set('@', resolve('./src'))
       .set('style', resolve('./src/mycommon/style'))
+      .set('mycommon', resolve('./src/mycommon'))
       .set('utils', resolve('./src/mycommon/utils'))
       .set('components', resolve('./src/components'))
   }

@@ -4,7 +4,8 @@
     <div class="listCon">
       <div class="con"
            v-for="(item,index) in list"
-           :key="index">
+           :key="index"
+           @click="handlDetails(item)">
         <img v-lazy="item.imgurl"
              alt="">
         <div>
@@ -36,8 +37,14 @@ export default {
           .then((res) => {
             Local.set('hotSongRecommend', res.data, 30000)
             this.list = res.data.list
+            console.log(this.list)
           })
       }
+    },
+    // 点击进入详情页
+    handlDetails (val) {
+      // console.log(val)
+      this.$router.push({ name: 'recommendDetails', query: { item: val } })
     }
 
   },

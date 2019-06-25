@@ -5,7 +5,7 @@
       <div class="con"
            v-for="(item,index) in rankList"
            :key="index"
-           @click="handleGo(item.id)">
+           @click="handleDetails(item)">
         <div class="left">
           <img v-lazy="item.picUrl"
                alt="">
@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-
+    <router-view></router-view>
   </div>
 </template>
 
@@ -35,11 +35,6 @@ export default {
   methods: {
     // 获取排行数据
     getRankData () {
-      // this.$axios.get('/api/fcj/rank/toplist')
-      //   .then((data) => {
-      //     this.rankList = data.data.topList
-      //     // console.log(this.rankList)
-      //   })
       let rankdata = Local.get('rankList')
       if (rankdata) {
         this.rankList = rankdata.topList
@@ -62,10 +57,11 @@ export default {
       })
     },
     // 点击获取id
-    handleGo (val) {
+    handleDetails (val) {
       console.log(val)
-      // this.$router.push({ name: 'songList', query: { id: val } })
+      this.$router.push({ name: 'rankDetails', query: { item: val } })
     }
+
   },
   mounted () {
     this.getRankData()

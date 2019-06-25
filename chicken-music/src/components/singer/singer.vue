@@ -9,7 +9,7 @@
         <div class="singerList"
              v-for="(item,index) in hot"
              :key="index"
-             @click="handleGoDetails(item.Fsinger_mid)">
+             @click="handleGoDetails(item)">
           <img v-lazy="item.imgUrl"
                alt="">
           <p>{{item.Fsinger_name}}</p>
@@ -24,7 +24,7 @@
         <div class="singerList"
              v-for="(item,i) in val "
              :key="`${index}${i}`"
-             @click="handleGoDetails(item.Fsinger_mid)">
+             @click="handleGoDetails(item)">
           <img v-lazy="item.imgUrl"
                alt="">
           <p>{{item.Fsinger_name}}</p>
@@ -244,7 +244,7 @@ export default {
     handleGoDetails (val) {
       console.log(val)
 
-      this.$router.push({ name: 'details', query: { id: val } })
+      this.$router.push({ name: 'details', query: { item: val } })
     }
 
   },

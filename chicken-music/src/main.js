@@ -5,13 +5,16 @@ import router from './router/router'
 import store from './store'
 
 // 引入公共样式
-import './mycommon/style/reset.css'
+import 'style/reset.css'
+// 引入iconfont公共样式
+import 'mycommon/myIconfont/iconfont.css'
+
 // 全局引入mint-ui
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
 // 引入二次封装的axiox
-import MyAxios from '../src/mycommon/utils/myAxios'
+import MyAxios from 'utils/myAxios'
 
 // 设置公共的方法observer
 Vue.prototype.observer = new Vue()
