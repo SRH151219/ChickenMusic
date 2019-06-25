@@ -8,10 +8,13 @@
       <h1>{{singerName}}</h1>
 
       <div class="mark"></div>
-
+      <!--  -->
       <div class="imgCon"
-           :style="bg">
+           :style="bg"
+           ref="imgCon">
+
       </div>
+
       <div class="play">
         <p class="iconfont icon-bofang"></p>
         <p>随机播放全部</p>
@@ -56,7 +59,8 @@ export default {
       title: '',
       singerName: '',
       bg: {
-      }
+      },
+      pic: ''
     }
   },
   created () {
@@ -65,6 +69,7 @@ export default {
     let { id, picUrl, topTitle } = this.$route.query.item
     this.id = id
     this.singerName = topTitle
+    this.pic = picUrl
     this.bg = {
       background: `url('${picUrl}') no-repeat`,
       'background-size': 'cover'
@@ -81,19 +86,37 @@ export default {
     getDetailsData () {
       let url = `https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&topid=${this.id}&needNewCode=1&uin=0&tpl=3&page=detail&type=top&platform=h5`
       Jsonp(url, { param: 'jsonpCallback' }, (err, res) => {
-        // 将数据存到缓存中
-        // Local.set('singerDetails', res.data, 30000)
-        // 调用处理数据的方法
-        console.log(res)
         this.list = res.songlist
-        // console.log(this.list)
       })
     },
     //
     initBs () {
       this.scroll = new BScroll('.singerWrapper', {
         click: true,
-        probeType: 2
+        probeType: 2,
+        // ------------------- 必须配置，否则当下拉后回弹时，不会被监听。--------------------
+        pullDownRefresh: {
+          // 回弹停留的位置
+          stop: 0
+        }
+      }),
+
+      this.scroll.on('scroll', ({ x, y }) => {
+        if (y >= 0) {
+          // 获取元素高度
+          let imgHeight = this.$refs.imgCon.offsetHeight
+          // 放大背景
+          let prencent = 1 + y / imgHeight
+          this.$refs.imgCon.style['transform-origin'] = 'top'
+          this.$refs.imgCon.style.transform = `scale(${prencent})`
+        }
+      })
+
+      // ---------------告诉better-scroll 完成下拉操作------------------
+      this.scroll.on('pullingDown', () => {
+        // 可在此处做下拉刷新操作
+        // 告诉better-scroll 完成下拉操作
+        this.scroll.finishPullDown()
       })
     }
   },
@@ -110,10 +133,11 @@ export default {
 #details {
   width: 100%;
   height: 100%;
-  background: #ccc;
-  z-index: 10;
+  // background: #ccc;
+  // z-index: 10;
   position: fixed;
   top: 0;
+  bottom: 0;
   .con {
     width: 100%;
     height: 100%;
@@ -126,7 +150,7 @@ export default {
       overflow: hidden;
       position: absolute;
       top: 0.4rem;
-      padding-bottom: 0.4rem;
+      // padding-bottom: 0.4rem;
       .wrapper {
         // height: 5.rem;
         height: 100%;
@@ -134,7 +158,7 @@ export default {
         position: absolute;
         top: 2.23rem;
         padding-bottom: 2.63rem;
-        background: #ccc;
+        // background: #ccc;
         .content {
           background: #222;
         }
@@ -173,7 +197,8 @@ export default {
   }
   .imgCon {
     width: 100%;
-    height: 2.63rem;
+    height: 4rem;
+    z-index: 20;
   }
   .play {
     position: absolute;
@@ -189,11 +214,12 @@ export default {
       margin-right: 5px;
     }
   }
+
   .list {
     padding: 20px 30px;
     .box {
       font-size: 14px;
-      height: 0.64rm;
+      height: 0.64rem;
       margin-bottom: 13px;
       display: flex;
       align-items: center;
